@@ -9,8 +9,7 @@ The library works on a asynchronous task behind the scenes and handles errors of
 
 ## Example of simplest usage:
 
-In this case filename will be a timestamp at the time `save()` is called.
-The path will default to `/Pictures` in the internal storage.
+In this case filename will be a timestamp at the time `save()` is called. Path will default to `/Pictures` in the internal storage.
 ```java
    PixelShot.of(view).toPNG().save();
 ```
