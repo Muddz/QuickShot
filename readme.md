@@ -1,6 +1,6 @@
 ## PixelShot
 [![](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=19)
-[![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/StyleableToast/raw/master/demo.apk)
+[![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/PixelShot/blob/master/demo.apk)
 
 
 PixelShot is a awsome Android library that saves any `View`, `ViewGroup` or `SurfaceView` as an image in either `JPG/PNG/.nomedia.`
