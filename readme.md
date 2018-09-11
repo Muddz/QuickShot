@@ -9,7 +9,7 @@ The library works on a asynchronous task behind the scenes and handles errors of
 
 ## Example of simplest usage:
 
-When no attributes is specified the library will just use the defaults as such:
+In this simple case where no attributes is specified the library will just use defaults as such:
 
 _Filename_ will be named to a timestamp when `save()` is called.  
 _Path_ will default to `/Pictures` in the internal storage.  
