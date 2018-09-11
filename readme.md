@@ -19,8 +19,8 @@ Path will default to `/Pictures` in the internal storage.
 ```java
              PixelShot.of(view)
                         .setResultListener(this)
-                        .setFilename("My image")
-                        .setPath("Pictures/myAppName")
+                        .setFilename("Sick image")
+                        .setPath("MySickApp/media/pictures")
                         .toPNG()
                         .save();
 ```
