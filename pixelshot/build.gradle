@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 27
@@ -11,13 +12,23 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     productFlavors {
     }
+}
+
+publish {
+    userOrg = 'muddz'
+    groupId = 'com.muddzdev'
+    artifactId = 'pixelshot'
+    publishVersion = '1.0.0'
+    desc = 'PixelShot saves any specific View in your Android app to an image'
+    website = 'https://github.com/Muddz/PixelShot'
 }
 
 dependencies {

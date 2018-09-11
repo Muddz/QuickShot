@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements PixelShot.PixelSh
     }
 
     private View getTargetView() {
-
         int currentItem = viewPager.getCurrentItem();
         BaseFragment fragment = (BaseFragment) viewPagerAdapter.getItem(currentItem);
         return fragment.getTargetView();
