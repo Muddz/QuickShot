@@ -13,7 +13,7 @@ In this case _filename_ will named to a timestamp when `save()` is called.
 _Path_ will default to `/Pictures` in the internal storage.
 The _image format_ will default to `.JPG`
 ```java
-   PixelShot.of(view).save();
+   PixelShot.of(view).setResultListener(this).save();
 ```
 
 ## Example of a detailed usage:
