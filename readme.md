@@ -3,16 +3,14 @@
 [![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/StyleableToast/raw/master/demo.apk)
 
 
-PixelShot is an Android library that saves any `View`, `ViewGroup` or `SurfaceView` as an image in either `JPG/PNG/.nomedia.`
+PixelShot is effective Android library that saves any `View`, `ViewGroup` or `SurfaceView` as an image in either `JPG/PNG/.nomedia.`
+The library works on a asynchronous task behind the scenes and handles errors of I/O operations and manages memory allocation for you.
 
-
-## Features
-
-----
 
 ## Example of simplest usage:
+
 ```java
-   PixelShot.of(view).toJPG().save();
+   PixelShot.of(view).toPNG().save();
 ```
 
 ## With all current attributes:
