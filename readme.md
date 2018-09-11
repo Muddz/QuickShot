@@ -13,7 +13,7 @@ The library works on a asynchronous task behind the scenes and handles errors of
    PixelShot.of(view).toPNG().save();
 ```
 
-## With all current attributes:
+## Example of a detailed usage:
 ```java
              PixelShot.of(view)
                         .setResultListener(this)
