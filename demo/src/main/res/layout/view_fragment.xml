@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <muddzdev.pixelshot.DrawingBoardView
+        android:id="@+id/drawingview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffe522" />
+
+    <LinearLayout
+        android:id="@+id/drawhint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:minWidth="30dp"
+            android:src="@drawable/ic_select" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Draw on the screen"
+            android:textColor="#000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</FrameLayout>
