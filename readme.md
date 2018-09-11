@@ -9,17 +9,18 @@ The library works on a asynchronous task behind the scenes and handles errors of
 
 ## Example of simplest usage:
 
-In this case filename will named to a timestamp at the time `save()` is called. 
+In this case filename will named to a timestamp when `save()` is called. 
 Path will default to `/Pictures` in the internal storage.
+The image format will default to `.JPG`
 ```java
-   PixelShot.of(view).toPNG().save();
+   PixelShot.of(view).save();
 ```
 
 ## Example of a detailed usage:
 ```java
              PixelShot.of(view)
                         .setResultListener(this)
-                        .setFilename("Sick image")
+                        .setFilename("Hello World")
                         .setPath("MySickApp/media/pictures")
                         .toPNG()
                         .save();
