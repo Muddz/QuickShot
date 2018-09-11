@@ -12,7 +12,7 @@ The library works on a asynchronous task behind the scenes and handles errors of
 In this simple case where no attributes is specified the library will just use defaults as such:
 
 Filename will be named to a timestamp when `save()` is called.  
-Path_ will default to `/Pictures` in the internal storage.  
+Path will default to `/Pictures` in the internal storage.  
 Image format will default to `.JPG`
 ```java
    PixelShot.of(view).setResultListener(this).save();
