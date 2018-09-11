@@ -9,9 +9,11 @@ The library works on a asynchronous task behind the scenes and handles errors of
 
 ## Example of simplest usage:
 
-In this case _filename_ will named to a timestamp when `save()` is called.  
+When no attributes is specified the library will just use the defaults as such:
+
+_Filename_ will be named to a timestamp when `save()` is called.  
 _Path_ will default to `/Pictures` in the internal storage.  
-The _image format_ will default to `.JPG`
+_Image format_ will default to `.JPG`
 ```java
    PixelShot.of(view).setResultListener(this).save();
 ```
