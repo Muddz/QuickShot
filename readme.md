@@ -3,8 +3,7 @@
 [![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/PixelShot/raw/master/demo.apk)
 
 
-PixelShot is a awsome Android library that saves any `View`, `ViewGroup` or `SurfaceView` as an image in either `JPG/PNG/.nomedia.`
-The library works on a asynchronous task behind the scenes and handles errors of I/O operations and manages memory allocation for you.
+PixelShot is an awsome Android library that can save any `View` as an image in the formats `JPG/PNG/nomedia`. The library works on a asynchronous task behind the scenes and handles errors of I/O operations and manages memory allocation for you.
 
 
 ## Example of simplest usage:
@@ -20,12 +19,11 @@ Image format will default to `.JPG`
 
 ## Example of a detailed usage:
 ```java
-             PixelShot.of(view)
-                        .setResultListener(this)
-                        .setFilename("Hello World")
-                        .setPath("MySickApp/media/pictures")
-                        .toPNG()
-                        .save();
+    PixelShot.of(view).setResultListener(this)
+                      .setFilename("Hello World")
+                      .setPath("MySickApp/media/pictures")
+                      .toPNG()
+                      .save();
 ```
     
     
@@ -41,13 +39,13 @@ dependencies {
 
 ## License
 
-    Copyright 2018 Muddii Walid
+    Copyright 2018 Muddi Walid
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
