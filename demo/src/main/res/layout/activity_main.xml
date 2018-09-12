@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        app:title="Viewshot demo" />
+        app:title="@string/app_name" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tablayout"

@@ -22,13 +22,14 @@ import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 
 /*
- * Copyright 2018 Muddi Walid (Muddzdev)
+ * Copyright 2018 Muddi Walid
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -51,19 +52,10 @@ public class PixelShot {
     private int jpgQuality = JPG_MAX_QUALITY;
 
     private PixelShotListener listener;
-    private Bitmap bitmap = null;
     private View view;
-
-    private PixelShot(@NonNull Bitmap bitmap) {
-        this.bitmap = bitmap;
-    }
 
     private PixelShot(@NonNull View view) {
         this.view = view;
-    }
-
-    public static PixelShot of(@NonNull Bitmap bitmap) {
-        return new PixelShot(bitmap);
     }
 
     public static PixelShot of(@NonNull View view) {
@@ -155,9 +147,8 @@ public class PixelShot {
     }
 
     private Bitmap getViewBitmap() {
-        if (bitmap != null) {
-            return bitmap;
-        } else if (view instanceof TextureView) {
+        Bitmap bitmap;
+        if (view instanceof TextureView) {
             bitmap = ((TextureView) view).getBitmap();
             Canvas canvas = new Canvas(bitmap);
             view.draw(canvas);
@@ -175,6 +166,7 @@ public class PixelShot {
 
     public interface PixelShotListener {
         void onPixelShotSuccess(String path);
+
         void onPixelShotFailed();
     }
 
