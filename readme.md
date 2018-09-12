@@ -19,8 +19,7 @@ Image format will default to `.JPG`
 
 ## Example of a detailed usage:
 ```java
-    PixelShot.of(view)
-                      .setResultListener(this)
+    PixelShot.of(view).setResultListener(this)
                       .setFilename("Hello World")
                       .setPath("MySickApp/media/pictures")
                       .toPNG()
