@@ -29,7 +29,7 @@ Image format will default to `.JPG`
     
 ## Installation
 
-Add the depedency in your `build.gradle`
+Add the dependency in your `build.gradle`
 ```groovy
 dependencies {
     implementation 'com.muddzdev:pixelshot:1.0.0'  
