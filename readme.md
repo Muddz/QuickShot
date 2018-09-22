@@ -24,8 +24,8 @@ Image format will default to `.JPG`
                       .save();
 ```
     
-    
-## Installation - NOTE: THERE ARE SOME PROBLEMS IN BINTRAY MAKING IT NOT AVAILABLE AT THE MOMENT!
+### THERE ARE SOME PROBLEMS IN BINTRAY MAKING IT NOT AVAILABLE AT THE MOMENT! (22 Sept 2018)
+## Installation
 
 Add the dependency in your `build.gradle`
 ```groovy
