@@ -3,10 +3,10 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: "com.jfrog.bintray"
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -23,8 +23,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
 }
@@ -87,7 +87,6 @@ tasks.withType(Javadoc).all {
     enabled = false
 }
 
-
 artifacts {
     archives javadocJar
     archives sourcesJar
@@ -101,12 +100,9 @@ bintray {
         repo = "maven"
         name = "PixelShot"
         websiteUrl = siteUrl
-        vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
         version {
-            gpg {
-                name = "1.0.0"
-            }
+            name = "1.0.0"
         }
     }
 }

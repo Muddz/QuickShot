@@ -18,7 +18,7 @@ import static android.view.View.MeasureSpec.EXACTLY;
  * Currently not in use.
  */
 
-public class BaseClass {
+public class BaseTestClass {
 
     static final String FORMAT_JPG = ".jpg";
     static final String FORMAT_PNG = ".png";
