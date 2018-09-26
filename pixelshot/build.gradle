@@ -92,9 +92,13 @@ artifacts {
     archives sourcesJar
 }
 
+Properties properties = new Properties()
+InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
+properties.load(inputStream)
+
 bintray {
-    bintray.user = "muddz"
-    bintray.key = "cd5bf822712334ccc336c04175625b0a46fae25b"
+    bintray.user = properties.getProperty("bintrayUser")
+    bintray.key = properties.getProperty('bintrayKey')
     configurations = ['archives']
     pkg {
         publish = true
