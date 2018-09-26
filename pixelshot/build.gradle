@@ -97,6 +97,7 @@ bintray {
     bintray.key = "cd5bf822712334ccc336c04175625b0a46fae25b"
     configurations = ['archives']
     pkg {
+        publish = true
         repo = "maven"
         name = "PixelShot"
         websiteUrl = siteUrl
