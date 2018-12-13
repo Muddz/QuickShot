@@ -2,9 +2,9 @@ package com.muddzdev.pixelshot;
 
 import android.Manifest;
 import android.graphics.Color;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.GrantPermissionRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.rule.GrantPermissionRule;
+import androidx.test.runner.AndroidJUnit4;
 import android.view.View;
 
 import org.junit.Assert;

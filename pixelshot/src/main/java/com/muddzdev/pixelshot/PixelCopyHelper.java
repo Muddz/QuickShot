@@ -4,10 +4,11 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.PixelCopy;
 import android.view.SurfaceView;
+
+import androidx.annotation.NonNull;
 
 class PixelCopyHelper {
 
@@ -35,6 +36,7 @@ class PixelCopyHelper {
 
     interface PixelCopyListener {
         void onSurfaceBitmapReady(Bitmap bitmap);
+
         void onSurfaceBitmapError();
     }
 }

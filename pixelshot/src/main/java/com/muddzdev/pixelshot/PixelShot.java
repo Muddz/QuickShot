@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;
@@ -20,6 +19,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
+
+import androidx.annotation.NonNull;
 
 /*
  * Copyright 2018 Muddi Walid
@@ -104,13 +105,11 @@ public class PixelShot {
      */
 
     public void save() throws NullPointerException {
-        if (!Utils.isExternalStorageReady()) {
-            Log.d(TAG, "Storage was not ready for use");
-            return;
+        if (!Utils.isStorageReady()) {
+            throw new IllegalStateException("Storage was not ready for use");
         }
         if (!Utils.isPermissionGranted(getAppContext())) {
-            Log.d(TAG, "Permission WRITE_EXTERNAL_STORAGE was not granted");
-            return;
+            throw new SecurityException("Permission WRITE_EXTERNAL_STORAGE is missing");
         }
 
         if (view instanceof SurfaceView) {
