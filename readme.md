@@ -5,6 +5,8 @@
 PixelShot is an awesome Android library that can save any `View` or `SurfaceView` as an image in `JPG`,`PNG` or `.nomedia`  
 The library works on a asynchronous and handles errors of I/O operations and memory handling for you. 
 
+Note: Taking an image of a SurfaceView is only supported from `minApi 24`
+
 ## Example of simplest usage:
 
 Filename will be named from a timestamp.   
