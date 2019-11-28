@@ -1,6 +1,6 @@
 # QuickShot
 [![](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=19)
-[![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/QuickShot/raw/master/demo.apk)
+[![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/QuickShot/raw/new/demo.apk)
 
 QuickShot is an Android library that can save any `View`, `SurfaceView` or `Bitmap` as an image in either `JPG`,`PNG` or `.nomedia`
 
