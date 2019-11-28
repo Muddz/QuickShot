@@ -7,6 +7,23 @@ QuickShot is an Android library that can save any `View`, `SurfaceView` or `Bitm
 The library works on a asynchronous background thread and handles errors of I/O operations and memory handling for you. 
 Note: Taking an image of a SurfaceView is only supported from `minApi 24`
 
+### What happend to PixelShot?
+
+Due to associations to Google's Pixel product lines such as: Pixel Buds, Pixel Slate, Pixel Book and Pixel phones, I've decided to change the name of the library to QuickShot. The new name underlines the libaries ease of use and its function.
+
+### What is new in QuickShot?
+
+- QuickShot has major refactorings and improvements over the previous PixelShot
+- Support for Android API 29+ and scooped storage
+- For Android API 29+ you can now use the `setInternalPath()` to save to the internal/private path
+- In PixelShot the `setPath()` was always relative to the external storage, but now you can set it to any path
+- `Bitmap` objects can now be passed into the constructor too
+- Removed long-list screeenshots, since this should not be the responsibility of the library
+- Full migration to AndroidX
+- Documentation of the code 
+
+
+
 ## Example of simplest usage:
 
 Filename will be set to a timestamp.   
