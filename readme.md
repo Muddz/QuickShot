@@ -12,8 +12,8 @@ Note: Taking an image of a SurfaceView is only supported from `minApi 24`
 Due to associations to Google's Pixel product lines such as: Pixel Buds, Pixel Slate, Pixel Book and Pixel phones, I've decided to change the name of the library to QuickShot. The new name underlines the libaries ease of use and its function.
 
 ### What is new in QuickShot?
+<i>QuickShot has major refactorings and improvements over the previous PixelShot</i>
 
-- QuickShot has major refactorings and improvements over the previous PixelShot
 - Support for Android API 29+ and scooped storage
 - For Android API 29+ you can now use the `setInternalPath()` to save to the internal/private path
 - In PixelShot the `setPath()` was always relative to the external storage, but now you can set it to any path
