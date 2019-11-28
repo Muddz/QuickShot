@@ -20,7 +20,7 @@ Due to associations to Google's Pixel product lines such as: Pixel Buds, Pixel S
 - `Bitmap` objects can now be passed into the constructor too
 - Removed long-list screeenshots, since this should not be the responsibility of the library
 - Full migration to AndroidX
-- Documentation of the code 
+- Documentation of the code
 
 
 
