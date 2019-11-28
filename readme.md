@@ -8,7 +8,7 @@ The library works on a asynchronous thread and handles errors of I/O operations 
 
 ### What happend to PixelShot?
 
-Due to associations to Google's Pixel product lines such as: Pixel Buds, Pixel Slate, Pixel Book and Pixel phones, I've decided to change the name of the library to QuickShot. The new name underlines the libaries ease of use and its function.
+Due to associations to Google's Pixel product lines such as: Pixel Buds, Pixel Slate, Pixel Book and Pixel phones, I've decided to change the name of the library to QuickShot. The new name underlines the libaries' ease of use and its function.
 
 ### What is new in QuickShot?
 <i>QuickShot has major refactorings and improvements over the previous PixelShot</i>
