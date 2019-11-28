@@ -25,9 +25,9 @@ Due to associations to Google's Pixel product lines such as: Pixel Buds, Pixel S
 
 ## Example of simplest usage with defaults:
 
-Filename will be set to a timestamp.   
-Path will be set to `/Pictures` in the public storage.  
-Image format will set to `.JPG`
+Filename defaults to a timestamp.   
+Path defaults to `/Pictures` in the public storage.  
+Image format defaults to `.JPG`
 
 ```java
    QuickShot.of(view).setResultListener(this).save();
