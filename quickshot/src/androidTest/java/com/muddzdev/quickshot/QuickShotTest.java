@@ -97,7 +97,7 @@ public class QuickShotTest {
 
     @Test
     public void testIfDirectoryWasCreated() {
-        QuickShot.of(testView).setPath("PixelShotTestDirectory").setResultListener(new QuickShot.QuickShotListener() {
+        QuickShot.of(testView).setPath("QuickShotTestDirectory").setResultListener(new QuickShot.QuickShotListener() {
             @Override
             public void onQuickShotSuccess(String path) {
                 File file = new File(path);
@@ -117,7 +117,7 @@ public class QuickShotTest {
 
     @Test
     public void testIfFileExist() {
-        QuickShot.of(testView).setPath("PixelShotTestDirectory").setResultListener(new QuickShot.QuickShotListener() {
+        QuickShot.of(testView).setPath("QuickShotTestDirectory").setResultListener(new QuickShot.QuickShotListener() {
             @Override
             public void onQuickShotSuccess(String path) {
                 File file = new File(path);
