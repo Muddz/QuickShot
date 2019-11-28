@@ -23,11 +23,11 @@ Due to associations to Google's Pixel product lines such as: Pixel Buds, Pixel S
 
 
 
-## Example of simplest usage:
+## Example of simplest usage with defaults:
 
 Filename will be set to a timestamp.   
-Path will default to `/Pictures` in the public storage.
-Image format will default to `.JPG`
+Path will be set to `/Pictures` in the public storage.  
+Image format will set to `.JPG`
 
 ```java
    QuickShot.of(view).setResultListener(this).save();
