@@ -2,10 +2,9 @@
 [![](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=19)
 [![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/QuickShot/raw/new/demo.apk)
 
-QuickShot is an Android library that can save any `View`, `SurfaceView` or `Bitmap` as an image in either `JPG`,`PNG` or `.nomedia`
+An Android library that saves any `View`, `SurfaceView` or `Bitmap` as an image in either `JPG`,`PNG` or `.nomedia`.
+The library works on a asynchronous thread and handles errors of I/O operations and wise memory handling for you. 
 
-The library works on a asynchronous background thread and handles errors of I/O operations and memory handling for you. 
-Note: Taking an image of a SurfaceView is only supported from `minApi 24`
 
 ### What happend to PixelShot?
 
