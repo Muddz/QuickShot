@@ -23,7 +23,8 @@ Due to associations to Google's Pixel product lines such as: Pixel Buds, Pixel S
 
 
 
-## Example of simplest usage with defaults:
+## Example of simplest usage with defaults
+<i>You can use a simple one-liner and let QuickShot set default values for File Attributes like in the following example:</i>
 
 Filename defaults to a timestamp.   
 Path defaults to `/Pictures` in the public storage.  
@@ -33,7 +34,7 @@ Image format defaults to `.JPG`
    QuickShot.of(view).setResultListener(this).save();
 ```
 
-## Example of a detailed usage:
+## Example of a detailed usage
 ```java
     QuickShot.of(view).setResultListener(this)
                       .setFilename("Hello World")
