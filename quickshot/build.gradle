@@ -23,7 +23,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
 }
@@ -32,11 +32,10 @@ def siteUrl = 'https://github.com/Muddz/QuickShot'
 def gitUrl = 'https://github.com/Muddz/QuickShot.git'
 def developerName = "muddz"
 group = "com.muddzdev"
-version = "1.0.0"
+version = "1.1.0"
 
 install {
     repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
         pom {
             project {
                 packaging 'aar'
@@ -106,7 +105,7 @@ bintray {
         websiteUrl = siteUrl
         licenses = ["Apache-2.0"]
         version {
-            name = "1.0.0"
+            name = "1.1.0"
         }
     }
 }

@@ -81,10 +81,9 @@ public class MainActivity extends AppCompatActivity implements QuickShot.QuickSh
     }
 
     @Override
-    public void onQuickShotFailed() {
-        Toast.makeText(this, "Couldn't save image", Toast.LENGTH_LONG).show();
+    public void onQuickShotFailed(String path) {
+        Toast.makeText(this, "Couldn't save image: " + path, Toast.LENGTH_LONG).show();
     }
-
 
     private void askPermissions() {
         int requestCode = 232;
@@ -95,5 +94,4 @@ public class MainActivity extends AppCompatActivity implements QuickShot.QuickSh
             }
         }
     }
-
 }

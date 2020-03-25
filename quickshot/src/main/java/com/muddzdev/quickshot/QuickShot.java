@@ -27,6 +27,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 
+import static android.os.Environment.DIRECTORY_PICTURES;
+
 /*
  * Copyright 2018 Muddi Walid
  *
@@ -51,14 +53,14 @@ public class QuickShot {
     private static final String EXTENSION_NOMEDIA = ".nomedia";
     private static final int JPG_MAX_QUALITY = 100;
 
-    private QuickShotListener listener;
+    private boolean saveInternal;
     private int jpgQuality = JPG_MAX_QUALITY;
     private String fileExtension = EXTENSION_JPG;
     private String filename = String.valueOf(System.currentTimeMillis());
     private String path;
-    private boolean saveInternal;
     private Bitmap bitmap;
     private View view;
+    private QuickShotListener listener;
 
     private QuickShot(@NonNull View view) {
         this.view = view;
@@ -197,7 +199,7 @@ public class QuickShot {
                 @Override
                 public void onSurfaceBitmapError() {
                     if (listener != null) {
-                        listener.onQuickShotFailed();
+                        listener.onQuickShotFailed(path);
                     }
                 }
             });
@@ -208,7 +210,7 @@ public class QuickShot {
 
     public interface QuickShotListener {
         void onQuickShotSuccess(String path);
-        void onQuickShotFailed();
+        void onQuickShotFailed(String path);
     }
 
     static class BitmapSaver extends AsyncTask<Void, Void, Void> {
@@ -216,12 +218,13 @@ public class QuickShot {
         private final WeakReference<Context> weakContext;
         private Handler handler = new Handler(Looper.getMainLooper());
         private QuickShotListener listener;
-        private Bitmap bitmap;
-        private String path;
+        private boolean success = true;
         private boolean saveInternal;
+        private int jpgQuality;
+        private String path;
         private String filename;
         private String fileExtension;
-        private int jpgQuality;
+        private Bitmap bitmap;
         private File file;
 
         BitmapSaver(Context context, Bitmap bitmap, boolean saveInternal, String path, String filename, String fileExtension, int jpgQuality, QuickShotListener listener) {
@@ -237,7 +240,7 @@ public class QuickShot {
 
         private void save() {
             if (path == null) {
-                path = Environment.getExternalStorageDirectory() + File.separator + Environment.DIRECTORY_PICTURES;
+                path = Environment.getExternalStorageDirectory() + File.separator + DIRECTORY_PICTURES;
             }
             File directory = new File(path);
             directory.mkdirs();
@@ -253,6 +256,7 @@ public class QuickShot {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                success = false;
                 cancel(true);
             } finally {
                 bitmap.recycle();
@@ -261,37 +265,38 @@ public class QuickShot {
         }
 
         private void saveScoopedStorage() {
-            String directory = Environment.DIRECTORY_PICTURES;
-            directory = path != null ? directory + File.separator + path : directory;
-            Log.d(TAG, directory);
-
+            path = (path != null ? (DIRECTORY_PICTURES + File.separator + path) : DIRECTORY_PICTURES);
+            file = new File(path, filename + fileExtension); //only used for success/fail listeners
             ContentResolver resolver = weakContext.get().getContentResolver();
             ContentValues contentValues = new ContentValues();
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, filename);
             contentValues.put(MediaStore.MediaColumns.MIME_TYPE, QuickShotUtils.getMimeType(fileExtension));
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, directory);
-
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, path);
             Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-            if (imageUri != null) {
-                file = new File(directory, filename + fileExtension);
-                try (OutputStream out = resolver.openOutputStream(imageUri)) {
-                    switch (fileExtension) {
-                        case EXTENSION_JPG:
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, jpgQuality, out);
-                            break;
-                        case EXTENSION_PNG:
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 0, out);
-                            break;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    cancel(true);
-                } finally {
-                    bitmap.recycle();
-                    bitmap = null;
+            if (imageUri == null) {
+                success = false;
+                String msg = String.format("ContentResolver couldn't create URI for filename: %s and path: %s", filename, path);
+                Log.e(TAG, msg);
+                return;
+            }
+
+            try (OutputStream out = resolver.openOutputStream(imageUri)) {
+                switch (fileExtension) {
+                    case EXTENSION_JPG:
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, jpgQuality, out);
+                        break;
+                    case EXTENSION_PNG:
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, out);
+                        break;
                 }
-            } else {
-                Log.e(TAG, "Couldn't save image: ContentResolver returned a null Uri");
+            } catch (Exception e) {
+                e.printStackTrace();
+                resolver.delete(imageUri, null, null);
+                success = false;
+                cancel(true);
+            } finally {
+                bitmap.recycle();
+                bitmap = null;
             }
         }
 
@@ -301,7 +306,7 @@ public class QuickShot {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        listener.onQuickShotFailed();
+                        listener.onQuickShotFailed(file.getAbsolutePath());
                     }
                 });
             }
@@ -320,15 +325,14 @@ public class QuickShot {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (listener != null && file != null) {
-                if (QuickShotUtils.isAndroidQ()) {
-                    listener.onQuickShotSuccess(file.getAbsolutePath());
-                } else if (file.exists()) {
-                    MediaScannerConnection.scanFile(weakContext.get(), new String[]{file.getAbsolutePath()}, null, null);
-                    listener.onQuickShotSuccess(file.getAbsolutePath());
-                }
-            } else if (listener != null) {
-                listener.onQuickShotFailed();
+            if (listener == null) {
+                return;
+            }
+            if (success) {
+                listener.onQuickShotSuccess(file.getAbsolutePath());
+                MediaScannerConnection.scanFile(weakContext.get(), new String[]{file.getAbsolutePath()}, null, null);
+            } else {
+                listener.onQuickShotFailed(file.getAbsolutePath());
             }
         }
     }
