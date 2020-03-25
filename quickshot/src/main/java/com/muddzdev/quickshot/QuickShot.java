@@ -87,10 +87,10 @@ public class QuickShot {
     }
 
     /**
-     * For devices running Android Q/API 29 and higher, files will now be saved relative to the public storage of /storage/Pictures due to Android's new 'Scooped storage'.
+     * For devices running Android Q (+API 29) files will now be saved relative to /storage/Pictures/ in public storage due to Android's new 'Scooped storage'.
      * <p>Directories which don't already exist will be automatically created.</p>
      *
-     * @param path if not set, path defaults to /Pictures regardless of any API level
+     * @param path if not set, path defaults to /Pictures/ regardless of any API level
      */
     public QuickShot setPath(String path) {
         this.path = path;
@@ -124,6 +124,7 @@ public class QuickShot {
 
     /**
      * Save as .jpg format in highest quality
+     * default is .jpg
      */
     public QuickShot toJPG() {
         jpgQuality = JPG_MAX_QUALITY;
@@ -133,6 +134,7 @@ public class QuickShot {
 
     /**
      * Save as .jpg format in a custom quality between 0-100
+     * default is 100
      */
     public QuickShot toJPG(int jpgQuality) {
         this.jpgQuality = jpgQuality;
@@ -142,6 +144,7 @@ public class QuickShot {
 
     /**
      * Save as .png format for lossless compression
+     * default is .jpg
      */
     public QuickShot toPNG() {
         setFileExtension(EXTENSION_PNG);
@@ -210,6 +213,7 @@ public class QuickShot {
 
     public interface QuickShotListener {
         void onQuickShotSuccess(String path);
+
         void onQuickShotFailed(String path);
     }
 
@@ -314,7 +318,7 @@ public class QuickShot {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            if (QuickShotUtils.isAndroidQ() && !saveInternal) {
+            if (QuickShotUtils.isAboveAPI29() && !saveInternal) {
                 saveScoopedStorage();
             } else {
                 save();
@@ -328,9 +332,12 @@ public class QuickShot {
             if (listener == null) {
                 return;
             }
+
             if (success) {
                 listener.onQuickShotSuccess(file.getAbsolutePath());
-                MediaScannerConnection.scanFile(weakContext.get(), new String[]{file.getAbsolutePath()}, null, null);
+                if (!QuickShotUtils.isAboveAPI29()) {
+                    MediaScannerConnection.scanFile(weakContext.get(), new String[]{file.getAbsolutePath()}, null, null);
+                }
             } else {
                 listener.onQuickShotFailed(file.getAbsolutePath());
             }
