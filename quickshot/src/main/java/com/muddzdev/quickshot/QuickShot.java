@@ -60,22 +60,26 @@ public class QuickShot {
     private String path;
     private Bitmap bitmap;
     private View view;
+    private Context context;
     private QuickShotListener listener;
+
 
     private QuickShot(@NonNull View view) {
         this.view = view;
+        this.context = view.getContext();
     }
 
-    private QuickShot(@NonNull Bitmap bitmap) {
+    private QuickShot(@NonNull Bitmap bitmap, @NonNull Context context) {
         this.bitmap = bitmap;
+        this.context = context;
     }
 
     public static QuickShot of(@NonNull View view) {
         return new QuickShot(view);
     }
 
-    public static QuickShot of(@NonNull Bitmap bitmap) {
-        return new QuickShot(bitmap);
+    public static QuickShot of(@NonNull Bitmap bitmap, @NonNull Context context) {
+        return new QuickShot(bitmap, context);
     }
 
     /**
@@ -159,11 +163,11 @@ public class QuickShot {
         return this;
     }
 
-    private Context getAppContext() {
-        if (view == null) {
-            throw new NullPointerException("Attempt to save the view failed: view was null");
+    private Context getContext() {
+        if (context == null) {
+            throw new NullPointerException("Attempt to save the picture failed: View or Context was null");
         }
-        return view.getContext().getApplicationContext();
+        return context;
     }
 
     private Bitmap getBitmap() {
@@ -187,16 +191,16 @@ public class QuickShot {
 
     /**
      * save() runs in a asynchronous thread
-     *
      * @throws NullPointerException if View is null.
      */
 
+    //Lets make this prettier
     public void save() throws NullPointerException {
         if (view instanceof SurfaceView) {
             PixelCopyHelper.getSurfaceBitmap((SurfaceView) view, new PixelCopyHelper.PixelCopyListener() {
                 @Override
                 public void onSurfaceBitmapReady(Bitmap surfaceBitmap) {
-                    new BitmapSaver(getAppContext(), surfaceBitmap, saveInternal, path, filename, fileExtension, jpgQuality, listener).execute();
+                    new BitmapSaver(getContext(), surfaceBitmap, saveInternal, path, filename, fileExtension, jpgQuality, listener).execute();
                 }
 
                 @Override
@@ -207,7 +211,7 @@ public class QuickShot {
                 }
             });
         } else {
-            new BitmapSaver(getAppContext(), getBitmap(), saveInternal, path, filename, fileExtension, jpgQuality, listener).execute();
+            new BitmapSaver(getContext(), getBitmap(), saveInternal, path, filename, fileExtension, jpgQuality, listener).execute();
         }
     }
 

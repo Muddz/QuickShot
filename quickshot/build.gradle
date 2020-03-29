@@ -32,7 +32,7 @@ def siteUrl = 'https://github.com/Muddz/QuickShot'
 def gitUrl = 'https://github.com/Muddz/QuickShot.git'
 def developerName = "muddz"
 group = "com.muddzdev"
-version = "1.1.0"
+version = "1.2.0"
 
 install {
     repositories.mavenInstaller {
@@ -105,7 +105,7 @@ bintray {
         websiteUrl = siteUrl
         licenses = ["Apache-2.0"]
         version {
-            name = "1.1.0"
+            name = "1.2.0"
         }
     }
 }

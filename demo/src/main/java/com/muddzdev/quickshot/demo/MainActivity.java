@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements QuickShot.QuickSh
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_jpg:
-                QuickShot.of(getTargetView()).setResultListener(this).save();
+                QuickShot.of(getTargetView()).setResultListener(this).toJPG().save();
                 break;
             case R.id.menu_pgn:
                 QuickShot.of(getTargetView()).setResultListener(this).toPNG().save();
