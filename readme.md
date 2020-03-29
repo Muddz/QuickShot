@@ -16,7 +16,7 @@ Due to associations to Google's Pixel product lines such as: Pixel Buds, Pixel S
 - Support for Android API 29+ and scooped storage
 - For Android API 29+ you can now use the `setInternalPath()` to save to the internal/private path
 - In PixelShot the `setPath()` was always relative to the external storage, but now you can set it to any path
-- `Bitmap` objects can now be passed into the constructor too (But with ´Context´ as second parameter)
+- `Bitmap` objects can now be passed into the constructor too (with `Context` as second parameter)
 - Removed long-list screeenshots, since this should not be the responsibility of the library
 - Full migration to AndroidX
 - Documentation of the code
@@ -48,7 +48,7 @@ Image format defaults to `.JPG`
 Add the dependency in your `build.gradle`
 ```groovy
 dependencies {
-    implementation 'com.muddzdev:quickshot:1.1.0'  
+    implementation 'com.muddzdev:quickshot:1.2.0'  
 }
 ```
  ----
