@@ -1,26 +1,15 @@
 # QuickShot
 [![](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=19)
-[![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/QuickShot/raw/new/demo.apk)
+[![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/QuickShot/raw/master/demo.apk)
 
-An Android library that saves any `View`, `SurfaceView` or `Bitmap` as an image in either `JPG`,`PNG` or `.nomedia`.
-The library works on a asynchronous thread and handles errors of I/O operations and wise memory handling for you. 
+An Android library that saves any `View`, `SurfaceView` or `Bitmap` as an image in `JPG`,`PNG` or `.nomedia`.
+The library works on a asynchronous thread, handles errors, I/O operations and memory for you. 
 
-
-### What happend to PixelShot?
-
-Due to associations to Google's Pixel product lines such as: Pixel Buds, Pixel Slate, Pixel Book and Pixel phones, I've decided to change the name of the library to QuickShot. The new name underlines the libaries' ease of use and its function.
-
-### What is new in QuickShot?
-<i>QuickShot has major refactorings and improvements over the previous PixelShot</i>
-
-- Support for Android API 29+ and scooped storage
-- For Android API 29+ you can now use the `setInternalPath()` to save to the internal/private path
-- In PixelShot the `setPath()` was always relative to the external storage, but now you can set it to any path
+### Features
+- Support for Android API 29+ and scoped storage
+- For Android API 29+ you must use the `setInternalPath()` to save to a internal/private path due to scoped storage
+- For Android API's below 29 `setPath()` can be used to save to any full path
 - `Bitmap` objects can now be passed into the constructor too (with `Context` as second parameter)
-- Removed long-list screeenshots, since this should not be the responsibility of the library
-- Full migration to AndroidX
-- Documentation of the code
-
 
 
 ## Example of simplest usage with defaults
@@ -48,7 +37,7 @@ Image format defaults to `.JPG`
 Add the dependency in your `build.gradle`
 ```groovy
 dependencies {
-    implementation 'com.muddzdev:quickshot:1.2.0'  
+    implementation 'com.muddzdev:quickshot:1.2.1'  
 }
 ```
  ----
