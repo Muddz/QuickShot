@@ -117,7 +117,8 @@ public class QuickShot {
     /**
      * Listen for successive or failure results when calling save()
      */
-    public QuickShot setResultListener(QuickShotListener listener) {
+    public QuickShot setResultListener(@NonNull QuickShotListener listener) {
+        //TODO should we throw an exception if listener is null?
         this.listener = listener;
         return this;
     }
@@ -191,6 +192,7 @@ public class QuickShot {
 
     /**
      * save() runs in a asynchronous thread
+     *
      * @throws NullPointerException if View is null.
      */
 
@@ -217,16 +219,15 @@ public class QuickShot {
 
     public interface QuickShotListener {
         void onQuickShotSuccess(String path);
-
-        void onQuickShotFailed(String path);
+        void onQuickShotFailed(String path, Exception e);
     }
 
     static class BitmapSaver extends AsyncTask<Void, Void, Void> {
 
         private final WeakReference<Context> weakContext;
-        private Handler handler = new Handler(Looper.getMainLooper());
+        private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+        private Exception exception;
         private QuickShotListener listener;
-        private boolean success = true;
         private boolean saveInternal;
         private int jpgQuality;
         private String path;
@@ -263,18 +264,16 @@ public class QuickShot {
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                success = false;
+                exception = e;
                 cancel(true);
             } finally {
-                bitmap.recycle();
                 bitmap = null;
             }
         }
 
-        private void saveScoopedStorage() {
-            path = (path != null ? (DIRECTORY_PICTURES + File.separator + path) : DIRECTORY_PICTURES);
-            file = new File(path, filename + fileExtension); //only used for success/fail listeners
+            private void saveForScopedStorage() {
+            path = path != null ? (DIRECTORY_PICTURES + File.separator + path) : DIRECTORY_PICTURES;
+            file = new File(path, filename + fileExtension); // 'file' here is only used for the listener
             ContentResolver resolver = weakContext.get().getContentResolver();
             ContentValues contentValues = new ContentValues();
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, filename);
@@ -282,9 +281,9 @@ public class QuickShot {
             contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, path);
             Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
             if (imageUri == null) {
-                success = false;
-                String msg = String.format("ContentResolver couldn't create URI for filename: %s and path: %s", filename, path);
+                String msg = String.format("ContentResolver couldn't create URI for filename: %s and path: %s", filename, path); //TODO Should we wrap the message in a Exception?
                 Log.e(TAG, msg);
+                cancel(true);
                 return;
             }
 
@@ -298,32 +297,18 @@ public class QuickShot {
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                exception = e;
                 resolver.delete(imageUri, null, null);
-                success = false;
                 cancel(true);
             } finally {
-                bitmap.recycle();
                 bitmap = null;
             }
         }
 
         @Override
-        protected void onCancelled() {
-            if (listener != null) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.onQuickShotFailed(file.getAbsolutePath());
-                    }
-                });
-            }
-        }
-
-        @Override
         protected Void doInBackground(Void... voids) {
-            if (QuickShotUtils.isAboveAPI29() && !saveInternal) {
-                saveScoopedStorage();
+            if (QuickShotUtils.isAboveAPI29() && !saveInternal) { //TODO what if saveInternal is true?
+                saveForScopedStorage();
             } else {
                 save();
             }
@@ -333,17 +318,23 @@ public class QuickShot {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (listener == null) {
-                return;
-            }
-
-            if (success) {
+            if (listener != null) {
                 listener.onQuickShotSuccess(file.getAbsolutePath());
                 if (!QuickShotUtils.isAboveAPI29()) {
                     MediaScannerConnection.scanFile(weakContext.get(), new String[]{file.getAbsolutePath()}, null, null);
                 }
-            } else {
-                listener.onQuickShotFailed(file.getAbsolutePath());
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            if (listener != null) {
+                mainThreadHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onQuickShotFailed(file.getAbsolutePath(), exception);
+                    }
+                });
             }
         }
     }
