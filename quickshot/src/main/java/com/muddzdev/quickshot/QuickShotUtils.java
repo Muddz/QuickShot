@@ -25,9 +25,7 @@ class QuickShotUtils {
     }
 
 
-    //TODO create a helper/utility class for this but don't make it part of the core functionality in QuickShot
     private Bitmap generateLongBitmap(RecyclerView recyclerView) {
-
         int itemCount = recyclerView.getAdapter().getItemCount();
         RecyclerView.ViewHolder viewHolder = recyclerView.getAdapter().createViewHolder(recyclerView, 0);
 

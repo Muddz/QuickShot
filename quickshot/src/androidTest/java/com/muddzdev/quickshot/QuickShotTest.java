@@ -41,7 +41,8 @@ public class QuickShotTest {
             }
 
             @Override
-            public void onQuickShotFailed() {
+            public void onQuickShotFailed(String path, String errorMsg) {
+
             }
         }).save();
         sleepThread();
@@ -57,8 +58,10 @@ public class QuickShotTest {
             }
 
             @Override
-            public void onQuickShotFailed() {
+            public void onQuickShotFailed(String path, String errorMsg) {
+
             }
+
         }).save();
         sleepThread();
     }
@@ -72,10 +75,10 @@ public class QuickShotTest {
             }
 
             @Override
-            public void onQuickShotFailed() {
+            public void onQuickShotFailed(String path, String errorMsg) {
+
             }
         }).save();
-
         sleepThread();
     }
 
@@ -88,7 +91,8 @@ public class QuickShotTest {
             }
 
             @Override
-            public void onQuickShotFailed() {
+            public void onQuickShotFailed(String path, String errorMsg) {
+
             }
         }).save();
         sleepThread();
@@ -107,7 +111,7 @@ public class QuickShotTest {
             }
 
             @Override
-            public void onQuickShotFailed() {
+            public void onQuickShotFailed(String path, String errorMsg) {
 
             }
         }).save();
@@ -126,7 +130,7 @@ public class QuickShotTest {
             }
 
             @Override
-            public void onQuickShotFailed() {
+            public void onQuickShotFailed(String path, String errorMsg) {
 
             }
         }).save();

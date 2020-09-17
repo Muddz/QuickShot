@@ -13,7 +13,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
@@ -47,13 +46,12 @@ import static android.os.Environment.DIRECTORY_PICTURES;
 
 public class QuickShot {
 
-    private static final String TAG = QuickShot.class.getSimpleName();
     private static final String EXTENSION_JPG = ".jpg";
     private static final String EXTENSION_PNG = ".png";
     private static final String EXTENSION_NOMEDIA = ".nomedia";
     private static final int JPG_MAX_QUALITY = 100;
 
-    private boolean saveInternal;
+    private boolean printStackTrace;
     private int jpgQuality = JPG_MAX_QUALITY;
     private String fileExtension = EXTENSION_JPG;
     private String filename = String.valueOf(System.currentTimeMillis());
@@ -91,9 +89,8 @@ public class QuickShot {
     }
 
     /**
-     * For devices running Android Q (+API 29) files will now be saved relative to /storage/Pictures/ in public storage due to Android's new 'Scooped storage'.
+     * <i>NOTE: For devices running Android 10 (+API 29) and above image files will now be saved relative to Internal storage/Pictures due to 'Scoped storage'</i><br><br>
      * <p>Directories which don't already exist will be automatically created.</p>
-     *
      * @param path if not set, path defaults to /Pictures/ regardless of any API level
      */
     public QuickShot setPath(String path) {
@@ -101,27 +98,6 @@ public class QuickShot {
         return this;
     }
 
-    /**
-     * Only for devices running Android Q/API 29 and higher!
-     *
-     * @param path relative to the apps internal storage
-     */
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    public QuickShot setInternalPath(String path) {
-        this.path = path;
-        this.saveInternal = true;
-        return this;
-    }
-
-    /**
-     * Listen for successive or failure results when calling save()
-     */
-    public QuickShot setResultListener(@NonNull QuickShotListener listener) {
-        //TODO should we throw an exception if listener is null?
-        this.listener = listener;
-        return this;
-    }
 
     private void setFileExtension(String fileExtension) {
         this.fileExtension = fileExtension;
@@ -164,6 +140,19 @@ public class QuickShot {
         return this;
     }
 
+    public QuickShot printStackTrace() {
+        printStackTrace = true;
+        return this;
+    }
+
+    /**
+     * Listen for successive or failure results when calling save()
+     */
+    public QuickShot setResultListener(@NonNull QuickShotListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
     private Context getContext() {
         if (context == null) {
             throw new NullPointerException("Attempt to save the picture failed: View or Context was null");
@@ -195,51 +184,50 @@ public class QuickShot {
      *
      * @throws NullPointerException if View is null.
      */
-
-    //Lets make this prettier
     public void save() throws NullPointerException {
         if (view instanceof SurfaceView) {
             PixelCopyHelper.getSurfaceBitmap((SurfaceView) view, new PixelCopyHelper.PixelCopyListener() {
                 @Override
                 public void onSurfaceBitmapReady(Bitmap surfaceBitmap) {
-                    new BitmapSaver(getContext(), surfaceBitmap, saveInternal, path, filename, fileExtension, jpgQuality, listener).execute();
+                    new BitmapSaver(getContext(), surfaceBitmap, printStackTrace, path, filename, fileExtension, jpgQuality, listener).execute();
                 }
 
                 @Override
-                public void onSurfaceBitmapError() {
+                public void onSurfaceBitmapError(String errorMsg) {
                     if (listener != null) {
-                        listener.onQuickShotFailed(path);
+                        listener.onQuickShotFailed(path, errorMsg);
                     }
                 }
             });
         } else {
-            new BitmapSaver(getContext(), getBitmap(), saveInternal, path, filename, fileExtension, jpgQuality, listener).execute();
+            new BitmapSaver(getContext(), getBitmap(), printStackTrace, path, filename, fileExtension, jpgQuality, listener).execute();
         }
     }
 
     public interface QuickShotListener {
         void onQuickShotSuccess(String path);
-        void onQuickShotFailed(String path, Exception e);
+
+        void onQuickShotFailed(String path, String errorMsg);
     }
 
     static class BitmapSaver extends AsyncTask<Void, Void, Void> {
 
         private final WeakReference<Context> weakContext;
         private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
-        private Exception exception;
-        private QuickShotListener listener;
-        private boolean saveInternal;
+        private boolean printStacktrace;
         private int jpgQuality;
+        private String errorMsg;
         private String path;
         private String filename;
         private String fileExtension;
         private Bitmap bitmap;
         private File file;
+        private QuickShotListener listener;
 
-        BitmapSaver(Context context, Bitmap bitmap, boolean saveInternal, String path, String filename, String fileExtension, int jpgQuality, QuickShotListener listener) {
+        BitmapSaver(Context context, Bitmap bitmap, boolean printStacktrace, String path, String filename, String fileExtension, int jpgQuality, QuickShotListener listener) {
             this.weakContext = new WeakReference<>(context);
             this.bitmap = bitmap;
-            this.saveInternal = saveInternal;
+            this.printStacktrace = printStacktrace;
             this.path = path;
             this.filename = filename;
             this.fileExtension = fileExtension;
@@ -247,7 +235,7 @@ public class QuickShot {
             this.listener = listener;
         }
 
-        private void save() {
+        private void saveLegacy() {
             if (path == null) {
                 path = Environment.getExternalStorageDirectory() + File.separator + DIRECTORY_PICTURES;
             }
@@ -264,25 +252,28 @@ public class QuickShot {
                         break;
                 }
             } catch (Exception e) {
-                exception = e;
+                if (printStacktrace) {
+                    e.printStackTrace();
+                }
+                errorMsg = e.toString();
                 cancel(true);
             } finally {
                 bitmap = null;
             }
         }
 
-            private void saveForScopedStorage() {
+        @RequiresApi(Build.VERSION_CODES.Q)
+        private void saveScopedStorage() {
             path = path != null ? (DIRECTORY_PICTURES + File.separator + path) : DIRECTORY_PICTURES;
-            file = new File(path, filename + fileExtension); // 'file' here is only used for the listener
-            ContentResolver resolver = weakContext.get().getContentResolver();
+            file = new File(path, filename + fileExtension); // file object here is only used for convenience in the onQuickShotFailed() callback
             ContentValues contentValues = new ContentValues();
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, filename);
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, QuickShotUtils.getMimeType(fileExtension));
             contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, path);
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, QuickShotUtils.getMimeType(fileExtension));
+            ContentResolver resolver = weakContext.get().getContentResolver();
             Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
             if (imageUri == null) {
-                String msg = String.format("ContentResolver couldn't create URI for filename: %s and path: %s", filename, path); //TODO Should we wrap the message in a Exception?
-                Log.e(TAG, msg);
+                errorMsg = String.format("Couldn't insert ContentValues with data: [%s] into the ContentResolver", contentValues.toString());
                 cancel(true);
                 return;
             }
@@ -297,7 +288,10 @@ public class QuickShot {
                         break;
                 }
             } catch (Exception e) {
-                exception = e;
+                if (printStacktrace) {
+                    e.printStackTrace();
+                }
+                errorMsg = e.toString();
                 resolver.delete(imageUri, null, null);
                 cancel(true);
             } finally {
@@ -307,10 +301,10 @@ public class QuickShot {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            if (QuickShotUtils.isAboveAPI29() && !saveInternal) { //TODO what if saveInternal is true?
-                saveForScopedStorage();
+            if (QuickShotUtils.isAboveAPI29()) {
+                saveScopedStorage();
             } else {
-                save();
+                saveLegacy();
             }
             return null;
         }
@@ -332,7 +326,7 @@ public class QuickShot {
                 mainThreadHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        listener.onQuickShotFailed(file.getAbsolutePath(), exception);
+                        listener.onQuickShotFailed(file.getAbsolutePath(), errorMsg);
                     }
                 });
             }

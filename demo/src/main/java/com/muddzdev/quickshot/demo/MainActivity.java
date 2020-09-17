@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements QuickShot.QuickSh
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_jpg:
-                QuickShot.of(getTargetView()).setResultListener(this).toJPG().save();
+                QuickShot.of(getTargetView()).setResultListener(this).toJPG().setPath("Quickshot").save();
                 break;
             case R.id.menu_pgn:
                 QuickShot.of(getTargetView()).setResultListener(this).toPNG().save();
@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity implements QuickShot.QuickSh
     }
 
     @Override
-    public void onQuickShotFailed(String path) {
-        Toast.makeText(this, "Couldn't save image: " + path, Toast.LENGTH_LONG).show();
+    public void onQuickShotFailed(String path, String errorMsg) {
+        Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
     }
 
     private void askPermissions() {
