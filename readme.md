@@ -3,7 +3,6 @@
 [![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/QuickShot/raw/master/demo.apk)
 
 An Android library that saves any `View`, `SurfaceView` or `Bitmap` as an image in `JPG`,`PNG` or `.nomedia`.
-
 The library works on a asynchronous thread and handles errors and memory for you. 
 
 ### Features
