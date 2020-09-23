@@ -40,7 +40,7 @@ install {
             project {
                 packaging 'aar'
                 name 'com.muddzdev:quickshot'
-                description = 'QuickShot is an awesome Android library that can save any View in your app as an image'
+                description = 'An Android library that saves any View, SurfaceView or Bitmap as an image in JPG, PNG or .nomedia'
                 url siteUrl
 
                 licenses {

@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements QuickShot.QuickSh
                 QuickShot.of(getTargetView()).setFilename("QuickShotJPG").setResultListener(this).toJPG().save();
                 break;
             case R.id.menu_pgn:
-                QuickShot.of(getTargetView()).setResultListener(this).toPNG().save();
+                QuickShot.of(getTargetView()).setResultListener(this).toPNG().enableLogging().save();
                 break;
             case R.id.menu_nomedia:
                 QuickShot.of(getTargetView()).setResultListener(this).toNomedia().save();
