@@ -2,6 +2,7 @@ package com.muddzdev.quickshot.demo;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements QuickShot.QuickSh
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_jpg:
-                QuickShot.of(getTargetView()).setResultListener(this).toJPG().setPath("Quickshot").save();
+                QuickShot.of(getTargetView()).setFilename("QuickShotJPG").setResultListener(this).toJPG().save();
                 break;
             case R.id.menu_pgn:
                 QuickShot.of(getTargetView()).setResultListener(this).toPNG().save();

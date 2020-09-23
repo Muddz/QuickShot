@@ -1,16 +1,15 @@
 package com.muddzdev.quickshot;
 
-import android.Manifest;
+import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 
 import androidx.test.InstrumentationRegistry;
-import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -22,13 +21,13 @@ import static android.view.View.MeasureSpec.EXACTLY;
 @RunWith(AndroidJUnit4.class)
 public class QuickShotTest {
 
-    @Rule
-    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    private Context context;
     private View testView;
 
     @Before
     public void setup() {
         testView = generateTestView();
+        context = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().getContext();
     }
 
 
@@ -104,10 +103,14 @@ public class QuickShotTest {
         QuickShot.of(testView).setPath("QuickShotTestDirectory").setResultListener(new QuickShot.QuickShotListener() {
             @Override
             public void onQuickShotSuccess(String path) {
-                File file = new File(path);
-                File directory = new File(file.getParent());
-                boolean isDirectory = directory.exists() && directory.isDirectory();
-                Assert.assertTrue(isDirectory);
+                if (QuickShotUtils.isAboveAPI29()) {
+                    Assert.assertTrue(path.contains("QuickShotTestDirectory"));
+                }else{
+                    File file = new File(path);
+                    File directory = new File(file.getParent());
+                    boolean isDirectory = directory.exists() && directory.isDirectory();
+                    Assert.assertTrue(isDirectory);
+                }
             }
 
             @Override
@@ -124,9 +127,12 @@ public class QuickShotTest {
         QuickShot.of(testView).setPath("QuickShotTestDirectory").setResultListener(new QuickShot.QuickShotListener() {
             @Override
             public void onQuickShotSuccess(String path) {
-                File file = new File(path);
-                boolean doFileExists = file.exists() && !file.isDirectory();
-                Assert.assertTrue(doFileExists);
+                if (QuickShotUtils.isAboveAPI29()) {
+                    Assert.assertTrue(path != null && path.length() > 0);
+                } else {
+                    File file = new File(path);
+                    Assert.assertTrue(file.exists());
+                }
             }
 
             @Override

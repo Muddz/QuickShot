@@ -12,8 +12,6 @@ import androidx.annotation.NonNull;
 
 class PixelCopyHelper {
 
-    private static final String TAG = PixelCopyHelper.class.getSimpleName();
-
     static void getSurfaceBitmap(@NonNull SurfaceView surfaceView, @NonNull final PixelCopyListener listener) {
         final Bitmap bitmap = Bitmap.createBitmap(surfaceView.getWidth(), surfaceView.getHeight(), Bitmap.Config.ARGB_8888);
         final HandlerThread handlerThread = new HandlerThread(PixelCopyHelper.class.getSimpleName());
@@ -26,17 +24,13 @@ class PixelCopyHelper {
                     if (copyResult == PixelCopy.SUCCESS) {
                         listener.onSurfaceBitmapReady(bitmap);
                     } else {
-                        String errorMsg = "Couldn't create bitmap of the SurfaceView";
-                        Log.e(TAG, errorMsg);
-                        listener.onSurfaceBitmapError(errorMsg);
+                        listener.onSurfaceBitmapError("Couldn't create bitmap of the SurfaceView");
                     }
                     handlerThread.quitSafely();
                 }
             }, new Handler(handlerThread.getLooper()));
         } else {
-            String errorMsg = "Saving an image of a SurfaceView is only supported for API 24 and above";
-            Log.i(TAG, errorMsg);
-            listener.onSurfaceBitmapError(errorMsg);
+            listener.onSurfaceBitmapError("Saving an image of a SurfaceView is only supported for API 24 and above");
         }
     }
 

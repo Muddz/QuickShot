@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
@@ -89,7 +90,7 @@ public class QuickShot {
     }
 
     /**
-     * <i>NOTE: For devices running Android 10 (+API 29) and above image files will now be saved relative to Internal storage/Pictures due to 'Scoped storage'</i><br><br>
+     * <i>NOTE: For devices running Android 10 (+API 29) and above image files will now be saved relative to /Internal storage/Pictures/ due to 'Scoped storage'</i><br><br>
      * <p>Directories which don't already exist will be automatically created.</p>
      * @param path if not set, path defaults to /Pictures/ regardless of any API level
      */
@@ -97,7 +98,6 @@ public class QuickShot {
         this.path = path;
         return this;
     }
-
 
     private void setFileExtension(String fileExtension) {
         this.fileExtension = fileExtension;
@@ -140,7 +140,10 @@ public class QuickShot {
         return this;
     }
 
-    public QuickShot printStackTrace() {
+    /**
+     * Enable QuickShot to log and print exception stacks
+     */
+    public QuickShot enableLogging() {
         printStackTrace = true;
         return this;
     }
@@ -150,6 +153,9 @@ public class QuickShot {
      */
     public QuickShot setResultListener(@NonNull QuickShotListener listener) {
         this.listener = listener;
+        if (listener == null) {
+            throw new NullPointerException("QuickShot.setResultListener() was provided with a null object reference");
+        }
         return this;
     }
 
@@ -194,9 +200,7 @@ public class QuickShot {
 
                 @Override
                 public void onSurfaceBitmapError(String errorMsg) {
-                    if (listener != null) {
-                        listener.onQuickShotFailed(path, errorMsg);
-                    }
+                    listener.onQuickShotFailed(path, errorMsg);
                 }
             });
         } else {
@@ -235,6 +239,9 @@ public class QuickShot {
             this.listener = listener;
         }
 
+        /**
+         * @deprecated
+         */
         private void saveLegacy() {
             if (path == null) {
                 path = Environment.getExternalStorageDirectory() + File.separator + DIRECTORY_PICTURES;
@@ -265,7 +272,6 @@ public class QuickShot {
         @RequiresApi(Build.VERSION_CODES.Q)
         private void saveScopedStorage() {
             path = path != null ? (DIRECTORY_PICTURES + File.separator + path) : DIRECTORY_PICTURES;
-            file = new File(path, filename + fileExtension); // file object here is only used for convenience in the onQuickShotFailed() callback
             ContentValues contentValues = new ContentValues();
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, filename);
             contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, path);
@@ -277,7 +283,6 @@ public class QuickShot {
                 cancel(true);
                 return;
             }
-
             try (OutputStream out = resolver.openOutputStream(imageUri)) {
                 switch (fileExtension) {
                     case EXTENSION_JPG:
@@ -287,6 +292,7 @@ public class QuickShot {
                         bitmap.compress(Bitmap.CompressFormat.PNG, 0, out);
                         break;
                 }
+                file = new File(path, filename + fileExtension);
             } catch (Exception e) {
                 if (printStacktrace) {
                     e.printStackTrace();
@@ -310,26 +316,21 @@ public class QuickShot {
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if (listener != null) {
-                listener.onQuickShotSuccess(file.getAbsolutePath());
-                if (!QuickShotUtils.isAboveAPI29()) {
-                    MediaScannerConnection.scanFile(weakContext.get(), new String[]{file.getAbsolutePath()}, null, null);
-                }
+        protected void onPostExecute(Void v) {
+            listener.onQuickShotSuccess(file.getAbsolutePath());
+            if (!QuickShotUtils.isAboveAPI29()) {
+                MediaScannerConnection.scanFile(weakContext.get(), new String[]{file.getAbsolutePath()}, null, null);
             }
         }
 
         @Override
         protected void onCancelled() {
-            if (listener != null) {
-                mainThreadHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.onQuickShotFailed(file.getAbsolutePath(), errorMsg);
-                    }
-                });
-            }
+            mainThreadHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onQuickShotFailed(file.getAbsolutePath(), errorMsg);
+                }
+            });
         }
     }
 }
