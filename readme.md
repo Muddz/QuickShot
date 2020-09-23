@@ -39,7 +39,7 @@ Image format defaults to `.JPG`
 Add the dependency in your `build.gradle`
 ```groovy
 dependencies {
-    implementation 'com.muddzdev:quickshot:1.2.0'  
+    implementation 'com.muddzdev:quickshot:1.3.0'  
 }
 ```
  ----
