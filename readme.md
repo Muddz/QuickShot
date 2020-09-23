@@ -3,20 +3,21 @@
 [![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/QuickShot/raw/master/demo.apk)
 
 An Android library that saves any `View`, `SurfaceView` or `Bitmap` as an image in `JPG`,`PNG` or `.nomedia`.
-The library works on a asynchronous thread, handles errors, I/O operations and memory for you. 
+The library works on a asynchronous thread and handles errors and memory for you. 
 
 ### Features
 - Support for Android API 29+ and scoped storage
-- For Android API 29+ you must use the `setInternalPath()` to save to a internal/private path due to scoped storage
-- For Android API's below 29 `setPath()` can be used to save to any full path
-- `Bitmap` objects can now be passed into the constructor too (with `Context` as second parameter)
+- Save in `JPG`,`PNG` or `.nomedia`.
+- Save a `Bitmap`, `View` or `SurfaceView` object as an image
+- Set path and filename or resort to defaults
+- Asynchronous saving
 
 
 ## Example of simplest usage with defaults
-<i>You can use a simple one-liner and let QuickShot set default values for File Attributes like in the following example:</i>
+<i>You can use a simple one-liner and let QuickShot set default values like in the following example:</i>
 
 Filename defaults to a timestamp.   
-Path defaults to `/Pictures` in the public storage.  
+Path defaults to `/Pictures` in internal storage.  
 Image format defaults to `.JPG`
 
 ```java
@@ -26,8 +27,9 @@ Image format defaults to `.JPG`
 ## Example of a detailed usage
 ```java
     QuickShot.of(view).setResultListener(this)
-                      .setFilename("Hello World")
-                      .setPath("MyApp/Pictures")
+                      .enableLogging()
+                      .setFilename("QuickShot")
+                      .setPath("MyApp")
                       .toPNG()
                       .save();
 ```
@@ -37,7 +39,7 @@ Image format defaults to `.JPG`
 Add the dependency in your `build.gradle`
 ```groovy
 dependencies {
-    implementation 'com.muddzdev:quickshot:1.2.1'  
+    implementation 'com.muddzdev:quickshot:1.2.0'  
 }
 ```
  ----
