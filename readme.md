@@ -2,7 +2,7 @@
 [![](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=19)
 [![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/QuickShot/raw/master/demo.apk)
 
-An Android library that saves any `View`, `SurfaceView` or `Bitmap` as an image in `JPG`,`PNG` or `.nomedia`.
+An Android library that saves any `View`, `SurfaceView` or `Bitmap` as an image in `JPG`,`PNG` or `.nomedia` in a very easy way.
 The library works on a asynchronous thread, handles errors, I/O operations and memory for you. 
 
 ### Features
@@ -27,7 +27,7 @@ Image format defaults to `.JPG`
 ```java
     QuickShot.of(view).setResultListener(this)
                       .setFilename("Hello World")
-                      .setPath("MyApp/Pictures")
+                      .setPath("MyApp")
                       .toPNG()
                       .save();
 ```
@@ -37,7 +37,7 @@ Image format defaults to `.JPG`
 Add the dependency in your `build.gradle`
 ```groovy
 dependencies {
-    implementation 'com.muddzdev:quickshot:1.2.1'  
+    implementation 'com.muddzdev:quickshot:1.2.0'  
 }
 ```
  ----
