@@ -8,8 +8,8 @@ The library works on a asynchronous thread and handles errors and memory for you
 ### Features
 - Support for Android API 29+ and scoped storage
 - Save in `JPG`,`PNG` or `.nomedia`.
-- Save a `Bitmap`, `View` or `SurfaceView` object as an image
-- Set path and filename or resort to defaults
+- Save `Bitmap`, `View` or `SurfaceView` objects as images
+- Set a path and filename for your captures or resort to auto defaults 
 - Asynchronous saving
 
 
