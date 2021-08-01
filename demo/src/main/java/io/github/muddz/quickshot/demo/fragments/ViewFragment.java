@@ -1,7 +1,5 @@
-package com.muddzdev.quickshot.demo.fragments;
+package io.github.muddz.quickshot.demo.fragments;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +9,8 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.muddzdev.quickshot.demo.DrawingBoardView;
-import com.muddzdev.quickshot.demo.R;
+import io.github.muddz.quickshot.demo.DrawingBoardView;
+import io.github.muddz.quickshot.demo.R;
 
 
 /**

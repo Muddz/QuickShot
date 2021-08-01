@@ -1,4 +1,4 @@
-package com.muddzdev.quickshot.demo;
+package io.github.muddz.quickshot.demo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

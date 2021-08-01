@@ -1,8 +1,9 @@
-package com.muddzdev.quickshot;
+package io.github.muddz.quickshot;
+
+import static android.view.View.MeasureSpec.EXACTLY;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 
 import androidx.test.InstrumentationRegistry;
@@ -14,8 +15,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.File;
-
-import static android.view.View.MeasureSpec.EXACTLY;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -105,7 +104,7 @@ public class QuickShotTest {
             public void onQuickShotSuccess(String path) {
                 if (QuickShotUtils.isAboveAPI29()) {
                     Assert.assertTrue(path.contains("QuickShotTestDirectory"));
-                }else{
+                } else {
                     File file = new File(path);
                     File directory = new File(file.getParent());
                     boolean isDirectory = directory.exists() && directory.isDirectory();

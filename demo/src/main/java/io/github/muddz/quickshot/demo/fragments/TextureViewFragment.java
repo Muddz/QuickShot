@@ -1,4 +1,4 @@
-package com.muddzdev.quickshot.demo.fragments;
+package io.github.muddz.quickshot.demo.fragments;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.muddzdev.quickshot.demo.R;
-
 import java.io.IOException;
 import java.util.List;
+
+import io.github.muddz.quickshot.demo.R;
 
 /**
  * Created by Muddz on 23-08-2017.

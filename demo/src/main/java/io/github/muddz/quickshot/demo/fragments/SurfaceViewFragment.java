@@ -1,4 +1,4 @@
-package com.muddzdev.quickshot.demo.fragments;
+package io.github.muddz.quickshot.demo.fragments;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.muddzdev.quickshot.demo.R;
+import io.github.muddz.quickshot.demo.R;
 
 
 /**

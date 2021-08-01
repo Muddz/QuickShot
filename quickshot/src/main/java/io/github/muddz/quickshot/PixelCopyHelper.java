@@ -1,10 +1,9 @@
-package com.muddzdev.quickshot;
+package io.github.muddz.quickshot;
 
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Log;
 import android.view.PixelCopy;
 import android.view.SurfaceView;
 
@@ -36,6 +35,7 @@ class PixelCopyHelper {
 
     interface PixelCopyListener {
         void onSurfaceBitmapReady(Bitmap bitmap);
+
         void onSurfaceBitmapError(String errorMsg);
     }
 }

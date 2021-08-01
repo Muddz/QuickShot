@@ -1,13 +1,13 @@
-package com.muddzdev.quickshot.demo;
+package io.github.muddz.quickshot.demo;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.muddzdev.quickshot.demo.fragments.SurfaceViewFragment;
-import com.muddzdev.quickshot.demo.fragments.TextureViewFragment;
-import com.muddzdev.quickshot.demo.fragments.ViewFragment;
+import io.github.muddz.quickshot.demo.fragments.SurfaceViewFragment;
+import io.github.muddz.quickshot.demo.fragments.TextureViewFragment;
+import io.github.muddz.quickshot.demo.fragments.ViewFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 

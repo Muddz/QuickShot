@@ -1,8 +1,7 @@
-package com.muddzdev.quickshot.demo;
+package io.github.muddz.quickshot.demo;
 
 import android.Manifest;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +14,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
 
 import com.google.android.material.tabs.TabLayout;
-import com.muddzdev.quickshot.QuickShot;
-import com.muddzdev.quickshot.demo.fragments.BaseFragment;
+
+import io.github.muddz.quickshot.QuickShot;
+import io.github.muddz.quickshot.demo.fragments.BaseFragment;
 
 
 public class MainActivity extends AppCompatActivity implements QuickShot.QuickShotListener {

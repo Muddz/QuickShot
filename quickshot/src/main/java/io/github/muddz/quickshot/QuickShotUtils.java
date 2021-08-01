@@ -1,4 +1,4 @@
-package com.muddzdev.quickshot;
+package io.github.muddz.quickshot;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

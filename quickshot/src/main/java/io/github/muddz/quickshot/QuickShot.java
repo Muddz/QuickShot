@@ -1,4 +1,4 @@
-package com.muddzdev.quickshot;
+package io.github.muddz.quickshot;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -92,6 +92,7 @@ public class QuickShot {
     /**
      * <i>NOTE: For devices running Android 10 (+API 29) and above image files will now be saved relative to /Internal storage/Pictures/ due to 'Scoped storage'</i><br><br>
      * <p>Directories which don't already exist will be automatically created.</p>
+     *
      * @param path if not set, path defaults to /Pictures/ regardless of any API level
      */
     public QuickShot setPath(String path) {
