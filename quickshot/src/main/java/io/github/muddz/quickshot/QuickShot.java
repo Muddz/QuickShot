@@ -1,25 +1,17 @@
 package io.github.muddz.quickshot;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -224,12 +216,9 @@ public class QuickShot {
             this.listener = listener;
         }
 
-        /**
-         * @deprecated
-         */
-        private void saveLegacy() {
+        private void save() {
             if (path == null) {
-                path = Environment.getExternalStorageDirectory() + File.separator + DIRECTORY_PICTURES;
+                path = weakContext.get().getFilesDir() + File.separator + DIRECTORY_PICTURES;
             }
             File directory = new File(path);
             directory.mkdirs();
@@ -254,49 +243,9 @@ public class QuickShot {
             }
         }
 
-        @RequiresApi(Build.VERSION_CODES.Q)
-        private void saveScopedStorage() {
-            path = path != null ? (DIRECTORY_PICTURES + File.separator + path) : DIRECTORY_PICTURES;
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, filename);
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, path);
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, QuickShotUtils.getMimeType(fileExtension));
-            ContentResolver resolver = weakContext.get().getContentResolver();
-            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-            if (imageUri == null) {
-                errorMsg = String.format("Couldn't insert ContentValues with data: [%s] into the ContentResolver", contentValues.toString());
-                cancel(true);
-                return;
-            }
-            try (OutputStream out = resolver.openOutputStream(imageUri)) {
-                switch (fileExtension) {
-                    case EXTENSION_JPG:
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, jpgQuality, out);
-                        break;
-                    case EXTENSION_PNG:
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, out);
-                        break;
-                }
-                file = new File(path, filename + fileExtension);
-            } catch (Exception e) {
-                if (printStacktrace) {
-                    e.printStackTrace();
-                }
-                errorMsg = e.toString();
-                resolver.delete(imageUri, null, null);
-                cancel(true);
-            } finally {
-                bitmap = null;
-            }
-        }
-
         @Override
         protected Void doInBackground(Void... voids) {
-            if (QuickShotUtils.isAboveAPI29()) {
-                saveScopedStorage();
-            } else {
-                saveLegacy();
-            }
+            save();
             return null;
         }
 
@@ -319,4 +268,3 @@ public class QuickShot {
         }
     }
 }
-
