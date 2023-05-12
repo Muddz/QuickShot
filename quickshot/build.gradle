@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
-    id 'com.vanniktech.maven.publish'
+//    id 'com.vanniktech.maven.publish'
+    id 'maven-publish'
 }
 android {
     compileSdk 30
@@ -23,4 +24,26 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test:rules:1.4.0'
+}
+
+publishing {
+    publications {
+        Common(MavenPublication) {
+            groupId GROUP
+            version VERSION_NAME
+            artifactId POM_ARTIFACT_ID
+
+            artifact("$buildDir/outputs/aar/quickshot-release.aar")
+
+            pom.withXml {
+                def dependencies = asNode().appendNode('dependencies')
+                configurations.getByName("releaseCompileClasspath").getResolvedConfiguration().getFirstLevelModuleDependencies().each {
+                    def dependency = dependencies.appendNode('dependency')
+                    dependency.appendNode('groupId', it.moduleGroup)
+                    dependency.appendNode('artifactId', it.moduleName)
+                    dependency.appendNode('version', it.moduleVersion)
+                }
+            }
+        }
+    }
 }
